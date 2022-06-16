@@ -22,3 +22,7 @@ canvas{
     max-height:100%;
     transform: translate(-50%,-50%);
 }
+
+img{
+    display: none;
+}
