@@ -1,95 +1,93 @@
-const canvas = document.querySelector('canvas');
-canvas.width = 600;
-canvas.height = 600;
-const ctx = canvas.getContext('2d');
 
-const p1 = document.querySelector('img');
-const player = {
-    w : 50,
-    h : 70,
-    x : 20,
-    y : 200,
-    speed : 5,
-    dx : 0,
-    dy : 0
-}
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    const p1 = document.querySelector('img');
 
-const moveRight = (e)=>{
-    player.dx = player.speed;
+    canvas.width = 600;
+    canvas.height = 550;
     
-}
-const moveLeft = (e)=>{
-    player.dx = -player.speed;
+    let floors = [];
+    let holes = [];
     
-}
-const moveUp = (e)=>{
-    player.dy = -player.speed;
-}
-const moveDown = (e)=>{
-    player.dy = player.speed;
-}
+    class Tile{
+        constructor(x,y,width, height, color){
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.color = color;
+            this.vel = 1;
+        }        
+        draw(){
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+        clear(){
+            ctx.clearRect(this.x,this.y,this.width, this.height);
+        }
+        update(){
+            this.y-=this.vel;
+            this.draw();
+        }
+    };
 
-const movePlayer = (e)=>{
-    if(e.key === 'ArrowRight'){
-        moveRight();
-    }
-    if(e.key === 'ArrowLeft'){
-        moveLeft();
-    }
-    if(e.key === 'ArrowUp'){
-        moveUp();
-    }
-    if(e.key === 'ArrowDown'){
-        moveDown();
-    }
-}
+    
 
-const stopPlayer = (e)=>{
-    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
-        player.dy = 0;
-    }
-    if(e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
-        player.dx = 0;
-    }
-}
+    var test = new Tile(50,400, 120, 10, "green");
 
-const newPos = ()=>{
-    player.x += player.dx;
-    player.y += player.dy;
-}
-const drawPlayer = ()=>{
-    ctx.drawImage(p1,player.x, player.y,player.w, player.h);
-}
-
-const clear = ()=>{
-    ctx.clearRect(0,0,canvas.width, canvas.height)
-}
-
-const detectWalls = ()=>{
-    if(player.x <= 0){
-        player.x = 0;
+    const setRandom = (min,max)=>{
+        return Math.floor(Math.random() * (max - min + 1) + min)
     }
-    if(player.x + player.w >= canvas.width){
-        player.x = canvas.width - player.w;
-    }
-    if(player.y <=0){
-        player.y = 0;
-    }
-    if(player.y + player.h >= canvas.height){
-        player.y = canvas.height - player.h;
-    }
-}
 
-const update = ()=>{
-    clear();
-    drawPlayer();
-    newPos();
-    detectWalls();
-    requestAnimationFrame(update);
-}
+    const moveBlock = ()=>{
+        requestAnimationFrame(moveBlock);
+        floors.forEach(floor=>{
+            floor.clear();
+            floor.update();
+        })
+        
+    }
 
-update();
-document.addEventListener('keydown', movePlayer);
-document.addEventListener('keyup', stopPlayer)
+    const generateRandomTiles = setInterval(()=>{
+        let width = setRandom(80,120);
+        let y = setRandom(580, 600);
+        let x = setRandom(10, canvas.width - width);
+
+        let newTile = new Tile(x,y,width, 10, "green");
+        floors.push(newTile);
+    }, 2000);
+
+    
+    class Ball{
+        constructor(x,y,radius,color){
+            this.x = x;
+            this.y = y;
+            this.radius = radius;
+            this.color = color;
+        }
+
+        draw(){
+            ctx.beginPath();
+            ctx.arc(this.x,this.y,this.radius,0,2*Math.PI);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        update(){
+            this.draw();
+        }
+    }
+
+    let player = new Ball(280,75,10,"blue");
+    player.update();
+
+    
+
+
+
+
+
+
 
 
