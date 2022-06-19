@@ -35,6 +35,7 @@
 
     var startFloor = new Tile(215,150, 120, 10, "green");
     startFloor.draw();
+    floors.push(startFloor);
 
     const setRandom = (min,max)=>{
         return Math.floor(Math.random() * (max - min + 1) + min)
@@ -46,15 +47,14 @@
     const moveBlock = ()=>{
         requestAnimationFrame(moveBlock);
         clear();
-        startFloor.update();
         
         floors.forEach(floor=>{
-            if(player.y + player.radius >floor.y){
+            if(player.y + player.radius >=floor.y && player.y < floor.y + floor.height){
                 if(player.x > floor.x && player.x <= floor.x + floor.width){
-                    player.fall = -1;
+                    player.fall = -floor.vel;
                 }
                 else{
-                    player.fall = 2;
+                    player.fall = 3.5;
                 }
             }
             floor.update();
