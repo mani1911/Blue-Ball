@@ -6,6 +6,7 @@
 }
 
 body{
+
     display: flex;
     background-color: #333;
     flex-direction: column;
@@ -25,4 +26,23 @@ canvas{
 
 img{
     display: none;
+}
+
+.block{
+
+    width : 400px;
+    height : 20px;
+    background-color: black;
+    position : relative;
+    top : 100px;
+    margin-top: -20px;
+}
+
+.hole{
+    width : 40px;
+    height : 20px;
+    background-color: transparent;
+    position: relative;
+    top: 100px;
+    margin-top : -20px;
 }

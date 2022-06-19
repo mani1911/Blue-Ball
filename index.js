@@ -8,6 +8,8 @@
     
     let floors = [];
     let holes = [];
+    let left;
+    let right;
     
     class Tile{
         constructor(x,y,width, height, color){
@@ -22,9 +24,7 @@
             ctx.fillStyle = this.color;
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
-        clear(){
-            ctx.clearRect(this.x,this.y,this.width, this.height);
-        }
+    
         update(){
             this.y-=this.vel;
             this.draw();
@@ -33,18 +33,34 @@
 
     
 
-    var test = new Tile(50,400, 120, 10, "green");
+    var startFloor = new Tile(215,150, 120, 10, "green");
+    startFloor.draw();
 
     const setRandom = (min,max)=>{
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
+    const clear = ()=>{
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+    }
     const moveBlock = ()=>{
         requestAnimationFrame(moveBlock);
+        clear();
+        startFloor.update();
+        
         floors.forEach(floor=>{
-            floor.clear();
+            if(player.y + player.radius >floor.y){
+                if(player.x > floor.x && player.x <= floor.x + floor.width){
+                    player.fall = -1;
+                }
+                else{
+                    player.fall = 2;
+                }
+            }
             floor.update();
         })
+        player.update();
+
         
     }
 
@@ -55,7 +71,7 @@
 
         let newTile = new Tile(x,y,width, 10, "green");
         floors.push(newTile);
-    }, 2000);
+    }, 1500);
 
     
     class Ball{
@@ -64,6 +80,8 @@
             this.y = y;
             this.radius = radius;
             this.color = color;
+            this.vel = 2;
+            this.fall = 2;
         }
 
         draw(){
@@ -76,13 +94,44 @@
 
         update(){
             this.draw();
+            if(left){
+                this.x-= this.vel;
+            }
+            if(right){
+                this.x+= this.vel;
+            }
+            if(this.x - this.radius < 0){
+                this.x = this.radius;
+            }
+            if(this.x + this.radius > canvas.width){
+                this.x = canvas.width - this.radius;
+            }
+            this.y += this.fall;
         }
     }
 
-    let player = new Ball(280,75,10,"blue");
-    player.update();
+    document.addEventListener('keydown',(e)=>{
+        if(e.key === 'ArrowLeft'){
+            left = true;
+        }
+        if(e.key === 'ArrowRight'){
+            right = true;
+        }
+    })
 
-    
+    document.addEventListener('keyup', (e)=>{
+        if(e.key === 'ArrowLeft'){
+            left = false;
+        }
+        if(e.key === 'ArrowRight'){
+            right = false;
+        }
+    })
+
+    let player = new Ball(280,75,10,"blue");
+    moveBlock();
+
+
 
 
 
