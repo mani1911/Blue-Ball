@@ -16,8 +16,7 @@ window.addEventListener('load',()=>{
     canvas.width = 700;
     canvas.height = 600;
 
-    const img = new Image();
-    img.src = "/images/cloud.png";    
+    
 
     let floors = [];
     let left;
@@ -34,7 +33,12 @@ window.addEventListener('load',()=>{
             this.vel = 1;
         }        
         draw(){
-            ctx.drawImage(img,this.x,this.y,this.width, this.height);
+            let img = new Image();
+            img.onload = ()=>{
+                ctx.drawImage(img,this.x,this.y,this.width, this.height);
+            }
+            img.src = "/images/cloud.png";
+            
         }
     
         update(){
