@@ -1,4 +1,4 @@
-
+window.addEventListener('load',()=>{
     const canvas = document.querySelector('canvas');
     const ctx = canvas.getContext('2d');
     const p1 = document.querySelector('img');
@@ -172,8 +172,7 @@
     let player = new Ball(335,75,10,"blue");
 
     moveBlock();
-
-
+});
 
 
 
