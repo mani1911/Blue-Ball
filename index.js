@@ -2,14 +2,15 @@
     const canvas = document.querySelector('canvas');
     const ctx = canvas.getContext('2d');
     const p1 = document.querySelector('img');
+    const toggleBtn = document.querySelector('.toggle');
+    canvas.width = 700;
+    canvas.height = 600;
 
-    canvas.width = 600;
-    canvas.height = 550;
-    
     let floors = [];
-    let holes = [];
     let left;
     let right;
+    let flag = false;
+    let health = 2;
     
     class Tile{
         constructor(x,y,width, height, color){
@@ -33,7 +34,7 @@
 
     
 
-    var startFloor = new Tile(215,150, 120, 10, "green");
+    var startFloor = new Tile(275,250, 120, 15, "black");
     startFloor.draw();
     floors.push(startFloor);
 
@@ -47,6 +48,19 @@
     const moveBlock = ()=>{
         requestAnimationFrame(moveBlock);
         clear();
+        if(flag){
+            if(health>0){
+                flag = false;
+                player.x = 280;
+                player.y = 75;
+                health--;
+
+            }
+            else{
+                return;
+            }
+
+        }
         
         floors.forEach(floor=>{
             if(player.y + player.radius >=floor.y && player.y < floor.y + floor.height){
@@ -60,8 +74,6 @@
             floor.update();
         })
         player.update();
-
-        
     }
 
     const generateRandomTiles = setInterval(()=>{
@@ -69,9 +81,10 @@
         let y = setRandom(580, 600);
         let x = setRandom(10, canvas.width - width);
 
-        let newTile = new Tile(x,y,width, 10, "green");
+        let newTile = new Tile(x,y,width, 15, "black");
         floors.push(newTile);
     }, 1500);
+
 
     
     class Ball{
@@ -93,6 +106,10 @@
         }
 
         update(){
+            if(this.y - this.radius <= 0 || this.radius + this.y >= canvas.height){
+                flag = true;
+                this.fall = 3.5;
+            }
             this.draw();
             if(left){
                 this.x-= this.vel;
@@ -128,10 +145,9 @@
         }
     })
 
-    let player = new Ball(280,75,10,"blue");
+    let player = new Ball(335,75,10,"blue");
+
     moveBlock();
-
-
 
 
 
