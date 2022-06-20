@@ -3,8 +3,22 @@
     const ctx = canvas.getContext('2d');
     const p1 = document.querySelector('img');
     const toggleBtn = document.querySelector('.toggle');
+    const score = document.querySelector('.score');
+    const lives = document.querySelector('.lives');
+
+    let points = 0;
+    const incrementScore = setInterval(()=>{
+        if(health >=0){
+            points++;
+            score.innerHTML = points;
+        }
+    },1000);
     canvas.width = 700;
     canvas.height = 600;
+
+    const img = new Image();
+    img.src = "/images/cloud.png";
+    
 
     let floors = [];
     let left;
@@ -13,17 +27,15 @@
     let health = 2;
     
     class Tile{
-        constructor(x,y,width, height, color){
+        constructor(x,y,width, height){
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
-            this.color = color;
             this.vel = 1;
         }        
         draw(){
-            ctx.fillStyle = this.color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
+            ctx.drawImage(img,this.x,this.y,this.width, this.height);
         }
     
         update(){
@@ -34,7 +46,7 @@
 
     
 
-    var startFloor = new Tile(275,250, 120, 15, "black");
+    var startFloor = new Tile(275,250, 120, 15);
     startFloor.draw();
     floors.push(startFloor);
 
@@ -46,7 +58,7 @@
         ctx.clearRect(0,0,canvas.width, canvas.height);
     }
     const moveBlock = ()=>{
-        requestAnimationFrame(moveBlock);
+        animation = requestAnimationFrame(moveBlock);
         clear();
         if(flag){
             if(health>0){
@@ -54,9 +66,14 @@
                 player.x = 280;
                 player.y = 75;
                 health--;
+                lives.innerHTML = health+1;
 
             }
             else{
+                console.log('here')
+                health--;
+                lives.innerHTML = health+1;
+                clearInterval(incrementScore);
                 return;
             }
 
@@ -75,6 +92,13 @@
         })
         player.update();
     }
+
+    const checkGameOver = setInterval(()=>{
+        if(health <= -1){
+            cancelAnimationFrame(animation);
+        }
+    
+    },1);
 
     const generateRandomTiles = setInterval(()=>{
         let width = setRandom(80,120);

@@ -6,7 +6,17 @@
 }
 
 body{
-    padding-top : 15px;
+    padding-left : 5px;
+    padding-right: 5px;
+    padding-top: 10px;
+    display: flex;
+    background-color: rgb(90, 219, 255);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.game{
     display: flex;
     background-color: rgb(90, 219, 255);
     flex-direction: column;
@@ -17,39 +27,32 @@ canvas{
     background-image: url(/images/bluemoon.png);
     background-repeat: none;
     background-size: cover;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
     max-width: 100%;
     max-height:100%;
-    transform: translate(-50%,-50%);
 }
 
 img{
     display: none;
 }
 
-.block{
-
-    width : 400px;
-    height : 20px;
-    background-color: black;
-    position : relative;
-    top : 100px;
-    margin-top: -20px;
+.controls{
+    margin-bottom: 8px;
+    display: flex;
+    width: 100%;
+    align-items: center;
 }
 
-.hole{
-    width : 40px;
-    height : 20px;
-    background-color: transparent;
-    position: relative;
-    top: 100px;
-    margin-top : -20px;
+.controls>h2{
+    color : white;
+    margin-left: auto;
+}
+
+.lifeBar{
+    margin-left: auto;
 }
 
 .toggle {
+    margin : auto;
     transition: all .5s ease;
     color: #fff;
     border: 3px solid white;
