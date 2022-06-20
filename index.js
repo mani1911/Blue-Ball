@@ -17,8 +17,7 @@ window.addEventListener('load',()=>{
     canvas.height = 600;
 
     const img = new Image();
-    img.src = "/images/cloud.png";
-    
+    img.src = "/images/cloud.png";    
 
     let floors = [];
     let left;
@@ -44,7 +43,13 @@ window.addEventListener('load',()=>{
         }
     };
 
-    
+    const gameOver = ()=>{
+        ctx.font = "50px Georgia";
+        ctx.fillStyle = "white";
+        ctx.fillText("Game Over", 240, 250);
+        ctx.font = "25px Georgia";
+        ctx.fillText(`Score : ${points}`, 300, 300);
+    }
 
     var startFloor = new Tile(275,250, 120, 15);
     startFloor.draw();
@@ -74,6 +79,7 @@ window.addEventListener('load',()=>{
                 health--;
                 lives.innerHTML = health+1;
                 clearInterval(incrementScore);
+                gameOver();
                 return;
             }
 
