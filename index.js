@@ -34,11 +34,10 @@ window.addEventListener('load',()=>{
         }        
         draw(){
             let img = new Image();
+            img.src = "/images/cloud.png";
             img.onload = ()=>{
                 ctx.drawImage(img,this.x,this.y,this.width, this.height);
-            }
-            img.src = "/images/cloud.png";
-            
+            }   
         }
     
         update(){
