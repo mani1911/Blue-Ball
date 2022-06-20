@@ -24,7 +24,7 @@ body{
     align-items: center;
 }
 canvas{
-    background-image: url(/images/bluemoon.png);
+    background-image: url(/assets/bluemoon.png);
     background-repeat: none;
     background-size: cover;
     max-width: 100%;

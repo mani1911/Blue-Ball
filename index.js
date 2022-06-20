@@ -6,6 +6,8 @@ window.addEventListener('load',()=>{
     const score = document.querySelector('.score');
     const lives = document.querySelector('.lives');
 
+    img = new Image();
+    img.src = "/assets/cloud.png";
     let points = 0;
     const incrementScore = setInterval(()=>{
         if(health >=0){
@@ -33,11 +35,7 @@ window.addEventListener('load',()=>{
             this.vel = 1;
         }        
         draw(){
-            let img = new Image();
-            img.src = "/images/cloud.png";
-            img.onload = ()=>{
-                ctx.drawImage(img,this.x,this.y,this.width, this.height);
-            }   
+            ctx.drawImage(img,this.x,this.y,this.width, this.height);
         }
     
         update(){
@@ -71,7 +69,7 @@ window.addEventListener('load',()=>{
         if(flag){
             if(health>0){
                 flag = false;
-                player.x = 280;
+                player.x = 335;
                 player.y = 75;
                 health--;
                 lives.innerHTML = health+1;
