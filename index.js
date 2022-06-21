@@ -7,6 +7,7 @@ window.addEventListener('load',()=>{
     const lives = document.querySelector('.lives');
     const highScore = document.querySelector('.highscore');
     
+    highScore.innerHTML = localStorage.highscore;
     let bg = new Image();
     bg.src = "assets/bluemoon.png";
 
@@ -30,22 +31,12 @@ window.addEventListener('load',()=>{
     let flag = false;
     let health = 2;
 
-    localStorage.leader = "";
-
     const updateLeaderBoard = (score)=>{
-        localStorage.leader+= `${score} `;
-        setLeaderBoard(score);
-    }
-
-    const setLeaderBoard = ()=>{
-        let max = 0;
-        let leaderB = localStorage.leader.split(' ')
-        for(let i of leaderB){
-            if(parseInt(i) > max){
-                max = i;
-            }
+        let prev = parseInt(localStorage.highscore);
+        if(score> prev){
+            localStorage.highscore = score;
+            highScore.innerHTML = score;
         }
-        highScore.innerHTML = max;
     }
     
     class Tile{
@@ -200,8 +191,14 @@ window.addEventListener('load',()=>{
     })
 
     let player = new Ball(335,75,10,"blue");
-
     moveBlock();
+
+    toggleBtn.addEventListener('click',()=>{
+        cancelAnimationFrame(animation);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        moveBlock();
+    
+    })
 });
 
 
