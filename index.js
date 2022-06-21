@@ -6,8 +6,8 @@ window.addEventListener('load',()=>{
     const score = document.querySelector('.score');
     const lives = document.querySelector('.lives');
 
-    img = new Image();
-    img.src = "/assets/cloud.png";
+    let img = new Image();
+    img.src = "assets/cloud.png";
     let points = 0;
     const incrementScore = setInterval(()=>{
         if(health >=0){

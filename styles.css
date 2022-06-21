@@ -46,21 +46,24 @@ img{
 }
 
 .scorebar{
+    font-family: 'Kdam Thmor Pro', sans-serif;
     color : white;
     margin-left: auto;
 }
 
 .lifeBar{
-    color : white;
+    font-family: 'Kdam Thmor Pro', sans-serif;
+    color : white;  
     margin-right: auto;
 }
 
 .toggle {
+
     margin: auto;
     transition: all .5s ease;
     color: #fff;
     border: 3px solid white;
-    font-family:'Montserrat', sans-serif;
+    font-family: 'Kdam Thmor Pro', sans-serif;
     text-transform: uppercase;
     text-align: center;
     line-height: 1;
@@ -74,3 +77,4 @@ img{
     color: #001F3F;
     background-color: #fff;
 }
+
