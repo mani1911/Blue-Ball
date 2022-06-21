@@ -142,6 +142,7 @@ window.addEventListener('load',()=>{
         }
         
         floors.forEach(floor=>{
+            floor.vel = vel;
             if(player.y + player.radius >=floor.y && player.y < floor.y + floor.height){
                 if(player.x > floor.x && player.x <= floor.x + floor.width){
                     player.fall = -floor.vel;
