@@ -7,7 +7,7 @@ window.addEventListener('load',()=>{
     const lives = document.querySelector('.lives');
     const highScore = document.querySelector('.highscore');
     
-    highScore.innerHTML = localStorage.highscore;
+    highScore.innerHTML = localStorage.highscore?localStorage.highscore:0;
     let bg = new Image();
     bg.src = "assets/bluemoon.png";
 
