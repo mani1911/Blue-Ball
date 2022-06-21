@@ -7,7 +7,13 @@ window.addEventListener('load',()=>{
     const lives = document.querySelector('.lives');
     const highScore = document.querySelector('.highscore');
     
-    highScore.innerHTML = localStorage.highscore?localStorage.highscore:0;
+    if(localStorage.highscore){
+        highScore.innerHTML = localStorage.highscore;
+    }
+    else{
+        highScore.innerHTML = 0;
+    }
+    console.log(localStorage.highscore);
     let bg = new Image();
     bg.src = "assets/bluemoon.png";
 
@@ -35,7 +41,7 @@ window.addEventListener('load',()=>{
 
     const increaseVel = setInterval(()=>{
         if(vel <=4){
-            vel+=0.5;
+            vel+=0.3;
         }
         if(ballVel <= 3){
             ballVel+=0.2;
@@ -44,8 +50,11 @@ window.addEventListener('load',()=>{
     },10000);
 
     const updateLeaderBoard = (score)=>{
-        let prev = parseInt(localStorage.highscore);
-        if(score> prev){
+        let prev = 0;
+        if(localStorage.highscore != undefined){
+            prev = localStorage.highscore;
+        }
+        if(score> parseInt(prev)){
             localStorage.highscore = score;
             highScore.innerHTML = score;
         }
@@ -205,13 +214,6 @@ window.addEventListener('load',()=>{
 
     let player = new Ball(335,75,10,"blue");
     moveBlock();
-
-    toggleBtn.addEventListener('click',()=>{
-        cancelAnimationFrame(animation);
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        moveBlock();
-    
-    })
 });
 
 
