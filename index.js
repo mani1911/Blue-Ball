@@ -5,6 +5,7 @@ window.addEventListener('load',()=>{
     const toggleBtn = document.querySelector('.toggle');
     const score = document.querySelector('.score');
     const lives = document.querySelector('.lives');
+    const highScore = document.querySelector('.highscore');
     
     let bg = new Image();
     bg.src = "assets/bluemoon.png";
@@ -28,6 +29,24 @@ window.addEventListener('load',()=>{
     let right;
     let flag = false;
     let health = 2;
+
+    localStorage.leader = "";
+
+    const updateLeaderBoard = (score)=>{
+        localStorage.leader+= `${score} `;
+        setLeaderBoard(score);
+    }
+
+    const setLeaderBoard = ()=>{
+        let max = 0;
+        let leaderB = localStorage.leader.split(' ')
+        for(let i of leaderB){
+            if(parseInt(i) > max){
+                max = i;
+            }
+        }
+        highScore.innerHTML = max;
+    }
     
     class Tile{
         constructor(x,y,width, height){
@@ -53,6 +72,7 @@ window.addEventListener('load',()=>{
         ctx.fillText("Game Over", 240, 250);
         ctx.font = "25px Georgia";
         ctx.fillText(`Score : ${points}`, 300, 300);
+        updateLeaderBoard(points);
     }
 
     var startFloor = new Tile(275,250, 120, 15);
@@ -80,7 +100,6 @@ window.addEventListener('load',()=>{
 
             }
             else{
-                console.log('here')
                 health--;
                 lives.innerHTML = health+1;
                 clearInterval(incrementScore);

@@ -24,7 +24,7 @@ body{
     align-items: center;
 }
 canvas{
-    background-image: url(assets/bluemoon.png);
+    
     background-repeat: none;
     background-size: cover;
     max-width: 100%;
@@ -76,5 +76,14 @@ img{
 .toggle:hover {
     color: #001F3F;
     background-color: #fff;
+}
+
+.leaderboard{
+    text-align: center;
+    margin-top: 5px;
+    color : white;
+    font-family: 'Kdam Thmor Pro', sans-serif;
+    font-size: larger;
+
 }
 
