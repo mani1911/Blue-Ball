@@ -6,6 +6,8 @@ window.addEventListener('load',()=>{
     const score = document.querySelector('.score');
     const lives = document.querySelector('.lives');
     const highScore = document.querySelector('.highscore');
+    const lifeBar = document.querySelector('.lifeBar');
+    const scoreBar = document.querySelector('.scorebar');
     
     if(localStorage.highscore){
         highScore.innerHTML = localStorage.highscore;
@@ -13,23 +15,15 @@ window.addEventListener('load',()=>{
     else{
         highScore.innerHTML = 0;
     }
-    console.log(localStorage.highscore);
+    
     let bg = new Image();
     bg.src = "assets/bluemoon.png";
 
     let img = new Image();
     img.src = "assets/cloud.png";
     let points = 0;
-    const incrementScore = setInterval(()=>{
-        if(health >=0){
-            points++;
-            score.innerHTML = points;
-        }
-    },1000);
     canvas.width = 700;
     canvas.height = 600;
-
-    
 
     let floors = [];
     let left;
@@ -38,6 +32,30 @@ window.addEventListener('load',()=>{
     let health = 2;
     let vel = 1;
     let ballVel = 2;
+
+    const incrementScore = setInterval(()=>{
+        if(health >=0){
+            if((points+1) % 10 == 0){
+                scoreBar.style.color = 'green';
+                setTimeout(()=>{
+                    scoreBar.style.color = 'white';
+                },1000);
+            }
+            points++;
+            score.innerHTML = points;
+        }
+    },1000);
+
+    const toggleLifeBar = ()=>{
+        lifeBar.style.color = 'red';
+        setTimeout(()=>{
+            lifeBar.style.color = 'white';
+        },1000);
+    }
+    const toggleScoreBar = ()=>{
+        
+
+    }
 
     const increaseVel = setInterval(()=>{
         if(vel <=4){
@@ -103,6 +121,7 @@ window.addEventListener('load',()=>{
         clear();
         ctx.drawImage(bg,0,0,canvas.width, canvas.height);
         if(flag){
+            toggleLifeBar();
             if(health>0){
                 flag = false;
                 player.x = 335;
