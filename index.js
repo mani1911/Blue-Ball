@@ -5,6 +5,9 @@ window.addEventListener('load',()=>{
     const toggleBtn = document.querySelector('.toggle');
     const score = document.querySelector('.score');
     const lives = document.querySelector('.lives');
+    
+    let bg = new Image();
+    bg.src = "assets/bluemoon.png";
 
     let img = new Image();
     img.src = "assets/cloud.png";
@@ -66,6 +69,7 @@ window.addEventListener('load',()=>{
     const moveBlock = ()=>{
         animation = requestAnimationFrame(moveBlock);
         clear();
+        ctx.drawImage(bg,0,0,canvas.width, canvas.height);
         if(flag){
             if(health>0){
                 flag = false;
