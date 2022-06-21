@@ -30,6 +30,18 @@ window.addEventListener('load',()=>{
     let right;
     let flag = false;
     let health = 2;
+    let vel = 1;
+    let ballVel = 2;
+
+    const increaseVel = setInterval(()=>{
+        if(vel <=4){
+            vel+=0.5;
+        }
+        if(ballVel <= 3){
+            ballVel+=0.2;
+        }
+
+    },10000);
 
     const updateLeaderBoard = (score)=>{
         let prev = parseInt(localStorage.highscore);
@@ -45,7 +57,7 @@ window.addEventListener('load',()=>{
             this.y = y;
             this.width = width;
             this.height = height;
-            this.vel = 1;
+            this.vel = vel;
         }        
         draw(){
             ctx.drawImage(img,this.x,this.y,this.width, this.height);
@@ -94,6 +106,7 @@ window.addEventListener('load',()=>{
                 health--;
                 lives.innerHTML = health+1;
                 clearInterval(incrementScore);
+                clearInterval(increaseVel);
                 gameOver();
                 return;
             }
@@ -128,7 +141,7 @@ window.addEventListener('load',()=>{
 
         let newTile = new Tile(x,y,width, 15, "black");
         floors.push(newTile);
-    }, 1500);
+    }, 500);
 
 
     
@@ -138,7 +151,7 @@ window.addEventListener('load',()=>{
             this.y = y;
             this.radius = radius;
             this.color = color;
-            this.vel = 2;
+            this.vel = ballVel;
             this.fall = 2;
         }
 
