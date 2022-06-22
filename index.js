@@ -19,12 +19,16 @@ window.addEventListener('load',()=>{
     let bg = new Image();
     bg.src = "assets/bluemoon.png";
 
+    let heart = new Image();
+    heart.src = "assets/heart.png"
+
     let img = new Image();
     img.src = "assets/cloud.png";
     let points = 0;
     canvas.width = 700;
     canvas.height = 600;
 
+    let healthSpawn = [];
     let floors = [];
     let left;
     let right;
@@ -44,6 +48,7 @@ window.addEventListener('load',()=>{
             points++;
             score.innerHTML = points;
         }
+        
     },1000);
 
     const toggleLifeBar = ()=>{
@@ -52,20 +57,16 @@ window.addEventListener('load',()=>{
             lifeBar.style.color = 'white';
         },1000);
     }
-    const toggleScoreBar = ()=>{
-        
-
-    }
 
     const increaseVel = setInterval(()=>{
-        if(vel <=4){
-            vel+=0.3;
+        if(vel <=5){
+            vel+=0.15;
         }
-        if(ballVel <= 3){
-            ballVel+=0.2;
+        if(ballVel <= 3.5){
+            ballVel+=0.1;
         }
 
-    },10000);
+    },5000);
 
     const updateLeaderBoard = (score)=>{
         let prev = 0;
@@ -76,6 +77,25 @@ window.addEventListener('load',()=>{
             localStorage.highscore = score;
             highScore.innerHTML = score;
         }
+    }
+
+    class Health{
+        constructor(x,y,radius){
+            this.x = x;
+            this.y = y;
+            this.radius = radius;
+            this.vel = vel;
+        }
+
+        draw(){
+            ctx.drawImage(heart,this.x,this.y,25,25);
+        }
+
+        update(){
+            this.y-=this.vel;
+            this.draw();
+        }
+        
     }
     
     class Tile{
@@ -138,10 +158,28 @@ window.addEventListener('load',()=>{
                 gameOver();
                 return;
             }
-
         }
+        healthSpawn.forEach(h=>{
+            h.vel = vel;
+            if(player.x+player.radius >= h.x && player.x - player.radius <= h.x+25){
+                if(player.y+player.radius <= h.y+25 && player.y - player.radius >= h.y - 25){
+                    if(health<2){
+                        health++;
+                        lives.innerHTML = health+1;
+                        lifeBar.style.color = 'green';
+                        setTimeout(()=>{
+                            lifeBar.style.color = 'white';
+                        },1000);
+                    }
+                    healthSpawn = healthSpawn.filter(hlth => hlth!=h);
+                    
+                }
+            }
+            h.update();
+        });
         
         floors.forEach(floor=>{
+            floors = floors.filter(floor=> floor.y>-30);
             floor.vel = vel;
             if(player.y + player.radius >=floor.y && player.y < floor.y + floor.height){
                 if(player.x > floor.x && player.x <= floor.x + floor.width){
@@ -164,13 +202,18 @@ window.addEventListener('load',()=>{
     },1);
 
     const generateRandomTiles = setInterval(()=>{
-        let width = setRandom(80,120);
-        let y = setRandom(580, 600);
-        let x = setRandom(10, canvas.width - width);
-
+        width = setRandom(80,120);
+        y = setRandom(580, 600);
+        x = setRandom(10, canvas.width - width);
         let newTile = new Tile(x,y,width, 15, "black");
         floors.push(newTile);
     }, 500);
+
+    const generateHealth = setInterval(()=>{
+        let newHealth = new Health(x + (width/2)-10,y-20,10);
+        healthSpawn.push(newHealth);
+        console.log(healthSpawn);
+    },10000);
 
 
     
