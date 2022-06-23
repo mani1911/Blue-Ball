@@ -22,6 +22,9 @@ window.addEventListener('load',()=>{
     let heart = new Image();
     heart.src = "assets/heart.png"
 
+    let arrowdown = new Image();
+    arrowdown.src = "assets/arrowdown.png"
+
     let img = new Image();
     img.src = "assets/cloud.png";
     let points = 0;
@@ -29,6 +32,7 @@ window.addEventListener('load',()=>{
     canvas.height = 600;
 
     let healthSpawn = [];
+    let slow = [];
     let floors = [];
     let left;
     let right;
@@ -36,6 +40,10 @@ window.addEventListener('load',()=>{
     let health = 2;
     let vel = 1;
     let ballVel = 2;
+
+    function randomIntFromInterval(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min)
+      }
 
     const incrementScore = setInterval(()=>{
         if(health >=0){
@@ -79,11 +87,27 @@ window.addEventListener('load',()=>{
         }
     }
 
-    class Health{
-        constructor(x,y,radius){
+    class Slowdown{
+        constructor(x,y){
             this.x = x;
             this.y = y;
-            this.radius = radius;
+            this.vel = vel;
+        }
+
+        draw(){
+            ctx.drawImage(arrowdown,this.x,this.y,25,25);
+        }
+
+        update(){
+            this.y-=this.vel;
+            this.draw();
+        }
+    }
+
+    class Health{
+        constructor(x,y){
+            this.x = x;
+            this.y = y;
             this.vel = vel;
         }
 
@@ -155,6 +179,7 @@ window.addEventListener('load',()=>{
                 lives.innerHTML = health+1;
                 clearInterval(incrementScore);
                 clearInterval(increaseVel);
+                clearInterval(generateHealth);
                 gameOver();
                 return;
             }
@@ -177,6 +202,22 @@ window.addEventListener('load',()=>{
             }
             h.update();
         });
+
+        slow.forEach(s=>{
+            s.vel = vel;
+            if(player.x+player.radius >= s.x && player.x - player.radius <= s.x+25){
+                if(player.y+player.radius <= s.y+25 && player.y - player.radius >= s.y - 25){
+                    let dec=  vel/2;
+                    vel-= dec;
+                    setTimeout(()=>{
+                        vel+= dec;
+                    },3000);
+                    slow = slow.filter(sl => sl!=s);
+                    
+                }
+            }
+            s.update();
+        })
         
         floors.forEach(floor=>{
             floors = floors.filter(floor=> floor.y>-30);
@@ -210,12 +251,17 @@ window.addEventListener('load',()=>{
     }, 500);
 
     const generateHealth = setInterval(()=>{
-        let newHealth = new Health(x + (width/2)-10,y-20,10);
-        healthSpawn.push(newHealth);
-        console.log(healthSpawn);
-    },10000);
+        const rand = randomIntFromInterval(0,1);
+        if(rand ===1){
+            let newHealth = new Health(x + (width/2)-10,y-20);
+            healthSpawn.push(newHealth);
+        }
+        else if(rand ===0){
+            let newSlow = new Slowdown(x + (width/2)-10,y-22);
+            slow.push(newSlow);
+        }
 
-
+    },5000);
     
     class Ball{
         constructor(x,y,radius,color){
