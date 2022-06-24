@@ -9,6 +9,14 @@ window.addEventListener('load',()=>{
     const lifeBar = document.querySelector('.lifeBar');
     const scoreBar = document.querySelector('.scorebar');
     
+    let healthSound = new Audio("sounds/health.mp3");
+    let teleport = new Audio("sounds/teleport-14639.mp3");
+    let slowsound = new Audio("sounds/cartoon-jump-6462.mp3");
+    let gameover = new Audio("sounds/gameover.wav");
+    let start = new Audio("sounds/start.mp3");
+     
+
+
     if(localStorage.highscore){
         highScore.innerHTML = localStorage.highscore;
     }
@@ -141,6 +149,7 @@ window.addEventListener('load',()=>{
     };
 
     const gameOver = ()=>{
+        gameover.play();
         ctx.font = "50px Georgia";
         ctx.fillStyle = "white";
         ctx.fillText("Game Over", 240, 250);
@@ -161,12 +170,14 @@ window.addEventListener('load',()=>{
         ctx.clearRect(0,0,canvas.width, canvas.height);
     }
     const moveBlock = ()=>{
+        
         animation = requestAnimationFrame(moveBlock);
         clear();
         ctx.drawImage(bg,0,0,canvas.width, canvas.height);
         if(flag){
             toggleLifeBar();
             if(health>0){
+                teleport.play();
                 flag = false;
                 player.x = 335;
                 player.y = 75;
@@ -189,6 +200,8 @@ window.addEventListener('load',()=>{
             if(player.x+player.radius >= h.x && player.x - player.radius <= h.x+25){
                 if(player.y+player.radius <= h.y+25 && player.y - player.radius >= h.y - 25){
                     if(health<2){
+                        healthSpawn = healthSpawn.filter(hlth => hlth!=h);
+                        healthSound.play();
                         health++;
                         lives.innerHTML = health+1;
                         lifeBar.style.color = 'green';
@@ -196,7 +209,7 @@ window.addEventListener('load',()=>{
                             lifeBar.style.color = 'white';
                         },1000);
                     }
-                    healthSpawn = healthSpawn.filter(hlth => hlth!=h);
+ 
                     
                 }
             }
@@ -207,6 +220,7 @@ window.addEventListener('load',()=>{
             s.vel = vel;
             if(player.x+player.radius >= s.x && player.x - player.radius <= s.x+25){
                 if(player.y+player.radius <= s.y+25 && player.y - player.radius >= s.y - 25){
+                    slowsound.play();
                     let dec=  vel/2;
                     vel-= dec;
                     setTimeout(()=>{
@@ -222,7 +236,7 @@ window.addEventListener('load',()=>{
         floors.forEach(floor=>{
             floors = floors.filter(floor=> floor.y>-30);
             floor.vel = vel;
-            if(player.y + player.radius >=floor.y && player.y < floor.y + floor.height){
+            if(player.y + player.radius >=floor.y && player.y < floor.y){
                 if(player.x > floor.x && player.x <= floor.x + floor.width){
                     player.fall = -floor.vel;
                 }
@@ -257,7 +271,7 @@ window.addEventListener('load',()=>{
             healthSpawn.push(newHealth);
         }
         else if(rand ===0){
-            let newSlow = new Slowdown(x + (width/2)-10,y-22);
+            let newSlow = new Slowdown(x + (width/2)-10,y-20);
             slow.push(newSlow);
         }
 
@@ -322,7 +336,11 @@ window.addEventListener('load',()=>{
     })
 
     let player = new Ball(335,75,10,"blue");
-    moveBlock();
+    startGame = ()=>{
+        start.play();
+        moveBlock();
+    }
+    startGame();
 });
 
 
