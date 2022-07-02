@@ -1,4 +1,5 @@
 window.addEventListener('load',()=>{
+    const re = document.getElementById('restart');
     const canvas = document.querySelector('canvas');
     const ctx = canvas.getContext('2d');
     const p1 = document.querySelector('img');
@@ -14,7 +15,24 @@ window.addEventListener('load',()=>{
     let slowsound = new Audio("sounds/cartoon-jump-6462.mp3");
     let gameover = new Audio("sounds/gameover.wav");
     let start = new Audio("sounds/start.mp3");
-     
+    
+    re.addEventListener('click', ()=>{
+    points = 0;
+    healthSpawn = [];
+    slow = [];
+    floors = [];
+    left;
+    right;
+    flag = false;
+    health = 2;
+    vel = 1;
+    ballVel = 2;
+    startGame();
+    increaseVel;
+    incrementScore;
+    generateHealth;
+
+    })
 
 
     if(localStorage.highscore){
@@ -29,6 +47,9 @@ window.addEventListener('load',()=>{
 
     let heart = new Image();
     heart.src = "assets/heart.png"
+
+    let restart = new Image();
+    restart.src = "assets/restart.png";
 
     let arrowdown = new Image();
     arrowdown.src = "assets/arrowdown.png"
@@ -156,6 +177,7 @@ window.addEventListener('load',()=>{
         ctx.font = "25px Georgia";
         ctx.fillText(`Score : ${points}`, 300, 300);
         updateLeaderBoard(points);
+        re.style.display = "block";
     }
 
     var startFloor = new Tile(275,250, 120, 15);
@@ -187,7 +209,7 @@ window.addEventListener('load',()=>{
             }
             else{
                 health--;
-                lives.innerHTML = health+1;
+                lives.innerHTML = 0;
                 clearInterval(incrementScore);
                 clearInterval(increaseVel);
                 clearInterval(generateHealth);
@@ -254,7 +276,7 @@ window.addEventListener('load',()=>{
             cancelAnimationFrame(animation);
         }
     
-    },1);
+    },);
 
     const generateRandomTiles = setInterval(()=>{
         width = setRandom(80,120);
@@ -336,8 +358,8 @@ window.addEventListener('load',()=>{
     })
 
     let player = new Ball(335,75,10,"blue");
-    startGame = ()=>{
-        start.play();
+    const startGame = ()=>{
+        re.style.display = "none";
         moveBlock();
     }
     startGame();
