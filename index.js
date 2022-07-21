@@ -298,7 +298,7 @@ window.addEventListener('load',()=>{
         width = setRandom(80,120);
         y = setRandom(580, 600);
         x = setRandom(10, canvas.width - width);
-        let rand = randomIntFromInterval(0,1);
+        let rand = setRandom(0,1);
         if(rand> prob){
             newTile = new FallTile(x,y,width, 15, "black")
         }
