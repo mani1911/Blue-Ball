@@ -14,27 +14,6 @@ window.addEventListener('load',()=>{
     let teleport = new Audio("sounds/teleport-14639.mp3");
     let slowsound = new Audio("sounds/cartoon-jump-6462.mp3");
     let gameover = new Audio("sounds/gameover.wav");
-    let start = new Audio("sounds/start.mp3");
-    
-    re.addEventListener('click', ()=>{
-    points = 0;
-    healthSpawn = [];
-    slow = [];
-    floors = [];
-    left;
-    right;
-    flag = false;
-    health = 2;
-    vel = 1;
-    ballVel = 2;
-    startGame();
-    increaseVel;
-    incrementScore;
-    generateHealth;
-
-    })
-
-
     if(localStorage.highscore){
         highScore.innerHTML = localStorage.highscore;
     }
