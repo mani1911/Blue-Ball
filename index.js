@@ -10,6 +10,7 @@ window.addEventListener('load',()=>{
     const lifeBar = document.querySelector('.lifeBar');
     const scoreBar = document.querySelector('.scorebar');
     
+    let prob = 1;
     let healthSound = new Audio("sounds/health.mp3");
     let teleport = new Audio("sounds/teleport-14639.mp3");
     let slowsound = new Audio("sounds/cartoon-jump-6462.mp3");
@@ -35,6 +36,10 @@ window.addEventListener('load',()=>{
 
     let img = new Image();
     img.src = "assets/cloud.png";
+
+    let blackCloud = new Image();
+    blackCloud.src = "assets/thunder.png";
+
     let points = 0;
     canvas.width = 700;
     canvas.height = 600;
@@ -81,6 +86,7 @@ window.addEventListener('load',()=>{
         if(ballVel <= 3.5){
             ballVel+=0.1;
         }
+        prob-=0.0000000000000001;
 
     },5000);
 
@@ -137,9 +143,29 @@ window.addEventListener('load',()=>{
             this.width = width;
             this.height = height;
             this.vel = vel;
+            this.isFall = false;
         }        
         draw(){
             ctx.drawImage(img,this.x,this.y,this.width, this.height);
+        }
+    
+        update(){
+            this.y-=this.vel;
+            this.draw();
+        }
+    };
+
+    class FallTile{
+        constructor(x,y,width, height){
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.vel = vel;
+            this.isFall = true;
+        }        
+        draw(){
+            ctx.drawImage(blackCloud,this.x,this.y,this.width, this.height);
         }
     
         update(){
@@ -239,7 +265,18 @@ window.addEventListener('load',()=>{
             floor.vel = vel;
             if(player.y + player.radius >=floor.y && player.y < floor.y){
                 if(player.x > floor.x && player.x <= floor.x + floor.width){
-                    player.fall = -floor.vel;
+                    if(floor.isFall == true){
+                        player.fall = -floor.vel;
+                        setTimeout(()=>{
+                            floors = floors.filter(fl=> fl!= floor);
+                            player.fall = 3.5;
+                        },700);
+                        
+                    }
+                    else{
+                        player.fall = -floor.vel;
+                    }
+                    
                 }
                 else{
                     player.fall = 3.5;
@@ -261,7 +298,15 @@ window.addEventListener('load',()=>{
         width = setRandom(80,120);
         y = setRandom(580, 600);
         x = setRandom(10, canvas.width - width);
-        let newTile = new Tile(x,y,width, 15, "black");
+        let rand = randomIntFromInterval(0,1);
+        if(rand> prob){
+            newTile = new FallTile(x,y,width, 15, "black")
+        }
+        else{
+            newTile = new Tile(x,y,width, 15, "black");
+        }
+
+        
         floors.push(newTile);
     }, 500);
 
